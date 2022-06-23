@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <material>
+    <renderpass>
+      <shadercore>result.rgb = color;
+result.a = 0.3;
+
+emission = color;</shadercore>
+      <transparency mode="transparency"/>
+      <premultiplyalpha/>
+      <blend srcfactor="one" dstfactor="oneminussrcalpha"/>
+      <linearshading/>
+      <custommaterial>
+        <diffuse r="1" g="0" b="0"/>
+        <ambient r="1" g="0" b="0"/>
+      </custommaterial>
+      <rgbgen mode="const" r="1" g="0" b="0"/>
+    </renderpass>
+    <option nonsolid="true"/>
+    <option noshadowcast="true"/>
+    <option noshadowreceive="true"/>
+  </material>
+</root>

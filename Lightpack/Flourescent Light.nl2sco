@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <sceneobject>
+    <model path="Models/Flourescent_Light.dae">
+      <content>Materials</content>
+      <clip distance="35"/>
+    </model>
+    <description>Flourescent light for use indoors typically hallways or warehouses</description>
+    <preview>Previews/Flourescent.png</preview>
+    <usercolor>
+      <label>Base Colour</label>
+      <index>0</index>
+      <defaultcolor r="0.407843" g="0.619608" b="0.678431"/>
+    </usercolor>
+    <usercolor>
+      <label>Dirt Colour</label>
+      <index>1</index>
+      <defaultcolor r="0.14902" g="0.137255" b="0.121569"/>
+    </usercolor>
+    <usercolor>
+      <label>Light Colour</label>
+      <index>2</index>
+      <lightsources>*</lightsources>
+      <defaultcolor r="1" g="1" b="1"/>
+    </usercolor>
+    <script>
+      <classpath>Scripts</classpath>
+      <class>light.LightFlourescent</class>
+      <sharedvm>true</sharedvm>
+      <resource id="SoundLoop">Sounds/Flourescent_MidDistance_Loop.ogg</resource>
+      <resource id="SoundOff">Sounds/Flourescent_MidDistance_Off.ogg</resource>
+      <resource id="SoundOn">Sounds/Flourescent_MidDistance_On.ogg</resource>
+    </script>
+    <materialpath name="Opaque">Materials/Atlas1_Opaque.nl2mat</materialpath>
+    <materialpath name="Transparent">Materials/Atlas1_Transparent.nl2mat</materialpath>
+    <lightsource range="1.4" intensity="0.6" type="point">
+      <name>GI</name>
+      <position x="0" y="0" z="0"/>
+      <color r="1" g="1" b="1"/>
+    </lightsource>
+    <lightsource range="15" intensity="1.5" type="spot" spotcutoff="80" spotexponent="2" frommodel="true">
+      <direction x="0" y="-1" z="-5.96047e-08"/>
+      <upvector x="0" y="1" z="0"/>
+      <name>Flourescent_Light</name>
+      <parent>Flourescent</parent>
+      <position x="0" y="-0.0376122" z="-2.24186e-09"/>
+      <color r="1" g="1" b="1"/>
+    </lightsource>
+  </sceneobject>
+</root>

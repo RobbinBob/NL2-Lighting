@@ -1,0 +1,283 @@
+//Script created by RobbinBob 
+
+package light;
+
+import com.nolimitscoaster.SceneObject;
+import com.nolimitscoaster.SceneObjectElement;
+import com.nolimitscoaster.SceneObjectLight;
+import com.nolimitscoaster.Script;
+import com.nolimitscoaster.StaticSound;
+
+import nlvm.math3d.Vector4f;
+import nlvm.math3d.Vector3f;
+import nlvm.math3d.Matrix4x4f;
+
+import nlvm.lang.String;
+
+import util.MoreMath;
+
+public class Light extends Script{
+
+	private SceneObject sco;
+	private SceneObjectElement rfr;
+	private SceneObjectLight[] lights;
+
+	private int state = 2;
+	private int lIndex = 0;
+	private float time = 0;
+	private float incr;
+
+	//'Frequency' the lights talk to eachother on
+	public static final Vector4f STATE_ON = new Vector4f(1.5253f, 0.2567f, 0.7532f, 1); //DO NOT CHANGE
+	public static final Vector4f STATE_OFF = new Vector4f(0.5253f, 0.2567f, 0.7532f, 1); //DO NOT CHANGE
+	private Vector4f STATE = STATE_OFF;
+	private Vector4f P_STATE = STATE_OFF;
+	
+	public static final String MSG_ERROR = "Error: ";
+	public static final String MSG_WARNING = "Warning: ";
+	public static final String MSG_NOTE = "Note: ";
+	
+	private Vector4f colour4 = new Vector4f();
+	private Vector3f colour3 = new Vector3f();
+	private Vector3f colour = new Vector3f();
+	
+	protected String SCRIPT_NAME = "Default";
+	
+	//Light sequence
+	protected float[] LIGHT_ANIM = {0, 0.1f, 0.15f, 0.2f, 0.25f, 0.3f, 0.35f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1};
+	protected float LIGHT_ON_TIME = 2;
+	protected float LIGHT_OFF_TIME = 0.2f;
+	protected bool LIGHT_REVERSE = false;
+	
+	protected int LIGHT_ENTITY_SLOT = 0;
+	
+	//Light sounds
+	protected bool HAS_SOUND = false;
+	protected int SOUND_MODE = 0; //1 = constant loop, 2 = sound in then loop, 3 = sound in then loop then sound out
+	protected float SOUND_GAIN = 0.25f;
+	protected float SOUND_FALLOFF = 0.8f;
+	protected float SOUND_DISTANCE = 10.0f;
+	
+	private StaticSound[] sounds;
+	private float[] soundLength;
+	private static final String[] fileIDs = {"SoundLoop", "SoundOn", "SoundOff"};
+	private float soundTime = 0;
+	private bool playOnSound = false;
+	private bool playOffSound = false;
+	
+	//Light handle
+	protected bool HAS_HANDLE = false;
+
+    public bool onInit(){
+		sco = sim.getSceneObjectForEntityId(getParentEntityId());
+        if(sco == null){
+            System.err.println(MSG_ERROR + SCRIPT_NAME + " not attached to a scenery object"); 
+            return false;
+        }
+
+		if(sco.getElementForName("rfr") == null){
+			System.err.println(MSG_ERROR + SCRIPT_NAME + " no element named 'rfr' found in model");
+			return false;
+		}
+
+		rfr = sco.getElementForName("rfr");
+		
+		if(sco.getLightCount() <= 0){
+			System.err.println(MSG_ERROR + SCRIPT_NAME + " no lights found in nl2sco");
+			return false;
+		}
+		
+		lights = new SceneObjectLight[sco.getLightCount()];
+		
+		for(int i = 0; i < sco.getLightCount(); i++){
+			lights[i] = sco.getLightAt(i);
+		}
+		
+		incr = 1.f / LIGHT_ANIM.length;
+		rfr.getEntityColor(LIGHT_ENTITY_SLOT, colour4);
+		colour3.set(colour4.x, colour4.y, colour4.z);
+		
+		updateLight(new Vector3f(0,0,0));
+		
+		//Setup sound settings
+		if(HAS_SOUND){
+			sounds = new StaticSound[SOUND_MODE];
+			soundLength = new float[SOUND_MODE];
+			
+			for(int i = 0; i < SOUND_MODE; i++){
+				sounds[i] = StaticSound.loadFromResourceId(fileIDs[i], StaticSound.FLAG_MIXDOWN_MONO);
+				if(sounds[i] == null){
+					System.err.println(MSG_ERROR + SCRIPT_NAME + " no resource id named '" + fileIDs[i] + "' found");
+					return false;
+				}
+				
+				soundLength[i] = (float) sounds[i].getLength();
+				sounds[i].setEnvironmentMode(StaticSound.E_ENVMODE_LOCAL);
+				sounds[i].setDistanceParameters(SOUND_DISTANCE, SOUND_FALLOFF);
+				sounds[i].setGain(SOUND_GAIN);
+				sounds[i].setPosition(sco.getTranslation());
+				sounds[i].setDopplerMode(true);
+			}
+		}
+		
+		//Setup handle
+		if(HAS_HANDLE){
+			if(sco.getStringParameter("handleUp").length() != 0){
+				if(sco.getElementForName("Handle") == null){
+					System.err.println(MSG_ERROR + SCRIPT_NAME + " handle specified but no model with name 'Handle' found");
+					return false;
+				}
+				
+				SceneObjectElement scoe = sco.getElementForName("Handle");
+				
+				float dir = 0;
+				switch(getIntFromStringList(sco.getStringParameter("handleUp"))){
+					case 0:
+						dir = 1.5708f + sco.getRotation().z; //UP
+					break;
+					case 1:
+						dir = (-1.5708f) + sco.getRotation().z; //DOWN
+					break;
+					case 2:
+						dir = sco.getRotation().z; //IN
+					break;
+					case 3:
+						dir = 3.14159f + sco.getRotation().z; //OUT
+					break;
+				}
+				
+				Matrix4x4f transform = new Matrix4x4f();
+				transform.initYRot(dir);
+				
+				scoe.setMatrix(transform);
+				//scoe.setRotation(0, 0, dot(sco.getRotation(), new Vector3f(0,1,0)));
+			}else{
+				SceneObjectElement scoe = sco.getElementForName("Handle");
+				
+				float angle = sco.getDoubleParameter("handleAngle").floatValue();
+				
+				Matrix4x4f transform = new Matrix4x4f();
+				transform.initYRot((float) Math.toRadians(angle));
+				
+				scoe.setMatrix(transform);
+			}
+		}
+		
+        return true;
+    }
+	
+	public int getIntFromStringList(String s){
+		if(s.equals("Up") || s.equals("up") || s.equals("UP")){
+			return 0;
+		}
+		if(s.equals("Down") || s.equals("down") || s.equals("DOWN")){
+			return 1;
+		}
+		if(s.equals("In") || s.equals("in") || s.equals("IN")){
+			return 2;
+		}
+		if(s.equals("Out") || s.equals("out") || s.equals("OUT")){
+			return 3;
+		}
+		return 0;
+	}
+	
+	public int round(float n){
+		long l = (long) Math.floor(n + 0.5f);
+		return (int) l;
+	}
+	
+	public float remap(float val, float in1, float in2, float out1, float out2){
+        return out1 + (val - in1) * (out2 - out1) / (in2 - in1);
+    }
+	
+	private void updateLight(Vector3f colour){
+		//System.out.println(remap(time, 0, 1, 0, LIGHT_ON_TIME));
+		for(int i = 0; i < lights.length; i++){
+			lights[i].setColor(colour);
+		}
+		
+		colour4.set(colour.x, colour.y, colour.z, 1);
+		Vector4f pColor = new Vector4f();
+		rfr.getEntityColor(0, pColor);
+		sco.setEntityColor(LIGHT_ENTITY_SLOT, colour4);
+		rfr.setEntityColor(0, pColor);
+	}
+	
+	public void onNextFrame(float tick){
+		rfr.getEntityColor(0, STATE);
+		state = !P_STATE.equals(STATE) ? (STATE.equals(STATE_ON) ? 1 : 0) : state;
+		
+		//Update light
+		switch(state){
+			case 0:
+				if(HAS_SOUND && SOUND_MODE == 1 || SOUND_MODE == 2){
+					sounds[0].stop();
+				}
+			
+				playOffSound = true;
+				if(time > 0){
+					time -= tick / LIGHT_OFF_TIME;
+				}else{
+					time = 0;
+					state = 2;
+				}
+				
+				colour = colour3.dup();
+				colour.mul(time);
+				updateLight(colour);
+			break;
+			case 1:
+				if(HAS_SOUND && SOUND_MODE == 1){
+					sounds[0].playLoop();
+				}
+				playOnSound = true;
+				//Update light	
+				if(time < 1){
+					time += tick / LIGHT_ON_TIME;
+				}else{
+					time = 1;
+					state = 2;
+				}
+				
+				int index = round(time / incr);
+				index = MoreMath.clamp(index, 0, LIGHT_ANIM.length);
+				float b = LIGHT_ANIM[index >= LIGHT_ANIM.length ? index - 1 : index];
+				colour = colour3.dup();
+				colour.mul(b);
+				updateLight(colour);
+			break;
+			case 2:
+				//resting state
+			break;
+			default:
+				System.err.println("Yay you found the easter egg!!!!...... also how did you manage to get this error to pop up????? like wha- how-");
+			break;
+		}
+		
+		//Update sound
+		if(HAS_SOUND){
+			if(SOUND_MODE > 1){
+				if(playOnSound){
+					if(soundTime < (soundLength[1] - 0.15f)){
+						sounds[1].play();
+						soundTime += tick;
+					}else{
+						sounds[1].stop();
+						sounds[0].playLoop();
+						playOnSound = false;
+						soundTime = 0;
+					}
+				}
+				if(playOffSound && SOUND_MODE == 3){
+					sounds[0].stop();
+					sounds[2].play();
+					playOffSound = false;
+				}
+			}
+		}
+
+		
+		P_STATE = STATE.dup();
+	}
+}

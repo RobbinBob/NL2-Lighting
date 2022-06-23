@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <sceneobject>
+    <model path="Models/Vertical_Light.dae">
+      <content>Materials</content>
+      <clip distance="35"/>
+    </model>
+    <description>Wide light great for use on catwalks and posts, anywhere people walk</description>
+    <preview>Previews/Wide_Shadows_Volume.png</preview>
+    <usercolor>
+      <label>Base Colour</label>
+      <index>0</index>
+      <defaultcolor r="0.407843" g="0.619608" b="0.678431"/>
+    </usercolor>
+    <usercolor>
+      <label>Dirt Colour</label>
+      <index>1</index>
+      <defaultcolor r="0.14902" g="0.137255" b="0.121569"/>
+    </usercolor>
+    <usercolor>
+      <label>Light Colour</label>
+      <index>2</index>
+      <lightsources>*</lightsources>
+      <defaultcolor r="1" g="1" b="1"/>
+    </usercolor>
+    <script>
+      <classpath>Scripts</classpath>
+      <class>light.LightWide</class>
+      <sharedvm>true</sharedvm>
+    </script>
+    <materialpath name="Opaque">Materials/Atlas1_Opaque.nl2mat</materialpath>
+    <materialpath name="Transparent">Materials/Atlas1_Transparent.nl2mat</materialpath>
+    <lightsource range="15" intensity="1" type="spot" spotcutoff="75" spotexponent="25" effectsonly="true" frommodel="true">
+      <direction x="1" y="-5.96046e-08" z="-3.55271e-15"/>
+      <upvector x="0" y="1" z="0"/>
+      <customcookietexturepath>Materials/Cookies/VerticalCookie.png</customcookietexturepath>
+      <name>Vertical_Volume</name>
+      <parent>Vertical</parent>
+      <position x="0.0150532" y="0" z="0"/>
+      <color r="1" g="1" b="1"/>
+      <volume range="2" intensity="0.0002" size="0.6"/>
+    </lightsource>
+    <lightsource range="1.4" intensity="0.6" type="point">
+      <name>GI</name>
+      <position x="0" y="0" z="0"/>
+      <color r="1" g="1" b="1"/>
+    </lightsource>
+    <lightsource range="15" intensity="1.5" type="spot" spotcutoff="80" spotexponent="2" frommodel="true">
+      <direction x="1" y="-5.96046e-08" z="-3.55271e-15"/>
+      <upvector x="0" y="1" z="0"/>
+      <name>Vertical_Light</name>
+      <parent>Vertical</parent>
+      <position x="0.0150532" y="0" z="0"/>
+      <color r="1" g="1" b="1"/>
+      <shadow/>
+    </lightsource>
+  </sceneobject>
+</root>

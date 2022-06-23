@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <sceneobject>
+    <model path="DemoScene.glb"/>
+    <materialpath name="Brick">NL2 Textures/Brick/Painted Brick (White).nl2mat</materialpath>
+    <materialpath name="Corrugated Metal">NL2 Textures/Metal/Clean Corrugated Metal (White).nl2mat</materialpath>
+    <materialpath name="Plywood">NL2 Textures/Wood/Plywood (New).nl2mat</materialpath>
+    <materialpath name="Wood Planks">NL2 Textures/Wood/Wooden Planks 02.nl2mat</materialpath>
+  </sceneobject>
+</root>

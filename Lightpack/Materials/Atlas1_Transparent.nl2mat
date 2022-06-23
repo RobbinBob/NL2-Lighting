@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <material>
+    <renderpass>
+      <shadercore>tmp0 = sub(1, tex2.r); //Invert the colour mix
+tmp2 = sub(1, tex3.a); //Invert the dirt mix
+
+tmp1 = mul(tmp0, entity0); //Add colour
+
+tmp1 = lerp(tmp2.a, entity1, tmp1); //Mix the dirt with the colour
+
+tmp0 = lerp(tmp0.r, tmp1, tex0); //Add in the non colourable parts
+result = tmp0;
+result.a = add(tex1.a, color.a);
+
+smoothness = add(tex2.g, tmp2); //Add the dirt factor into the roughness
+metallic = sub(tex2.b, 0.5);
+
+emission = mul(entity2, tex2.a);</shadercore>
+      <transparency mode="transparency"/>
+      <premultiplyalpha/>
+      <blend srcfactor="one" dstfactor="oneminussrcalpha"/>
+      <linearshading/>
+      <reflection bump="true" fresnelconst="0" fresnelvar="0.4"/>
+      <alphagen mode="depth" factor="0.15" offset="-0.9"/>
+      <rgbgen mode="bumplighting"/>
+      <texunit>
+        <map>Low_Albedo.png</map>
+        <tcgen mode="base"/>
+      </texunit>
+      <texunit>
+        <map>Low_NormalGL.png</map>
+        <bump mode="normalgloss"/>
+        <tcgen mode="base"/>
+      </texunit>
+      <texunit>
+        <map>Low_CGME.png</map>
+        <tcgen mode="base"/>
+      </texunit>
+      <texunit>
+        <map>Lights_1_Dirtmap.png</map>
+        <tcgen mode="base"/>
+      </texunit>
+    </renderpass>
+    <option nonsolid="true"/>
+    <option noshadowcast="true"/>
+  </material>
+</root>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <sceneobject>
+    <model path="Models/Flourescent_Light_Cable.dae">
+      <content>Materials</content>
+      <clip distance="35"/>
+    </model>
+    <description>Cable for flourescent lights to hang from with adjustable size</description>
+    <preview>Previews/Flourescent_Cable.png</preview>
+    <materialpath name="Cable">Materials/Cable.nl2mat</materialpath>
+  </sceneobject>
+</root>

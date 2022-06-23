@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <material>
+    <renderpass>
+      <transparency mode="opaque"/>
+      <nodepthwrite/>
+      <linearshading/>
+      <alphagen mode="const" a="0"/>
+    </renderpass>
+    <option norender="true"/>
+    <option noeditorrender="true"/>
+    <option noshadowcast="true"/>
+    <option noshadowreceive="true"/>
+  </material>
+</root>

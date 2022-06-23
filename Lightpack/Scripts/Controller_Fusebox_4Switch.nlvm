@@ -1,0 +1,25 @@
+//Script created by RobbinBob 
+
+import com.nolimitscoaster.SceneObjectElement;
+import com.nolimitscoaster.SceneObject;
+
+import nlvm.math3d.Vector3f;
+
+public class Controller_Fusebox_4Switch extends Controller 
+{
+    public final bool onInit(){
+        int lightGroups = 4;
+        
+        super.PREFIX = new String[lightGroups];
+        super.SWITCH = new SceneObjectElement[lightGroups];
+        super.LIGHTOBJ = new SceneObject[lightGroups][];
+        super.SCRIPT_NAME = "Controller_Fusebox_4Switch";
+		
+		super.HASDOORANIM = true;
+		
+		super.ON_POS = new Vector3f(0,0,130);
+		super.OFF_POS = new Vector3f(0,0,0);
+		
+        return super.onInit();
+    }
+}

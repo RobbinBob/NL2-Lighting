@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <material>
+    <renderpass>
+      <transparency mode="opaque"/>
+      <linearshading/>
+      <custommaterial>
+        <diffuse r="0.270588" g="0.270588" b="0.270588"/>
+        <ambient r="0.270588" g="0.270588" b="0.270588"/>
+        <specular r="0.701961" g="0.701961" b="0.701961"/>
+        <shininess exponent="72.8615"/>
+      </custommaterial>
+      <rgbgen mode="lighting"/>
+    </renderpass>
+    <option nonsolid="true"/>
+  </material>
+</root>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <sceneobject>
+    <model path="Models/Fusebox_4Switch.dae">
+      <content>Materials</content>
+      <clip distance="30"/>
+    </model>
+    <description>4-Slot Fusebox for controlling lights</description>
+    <preview>Previews/Fusebox_4Switch.png</preview>
+    <usercolor>
+      <label>Base Colour</label>
+      <index>0</index>
+      <defaultcolor r="0.407843" g="0.619608" b="0.678431"/>
+    </usercolor>
+    <usercolor>
+      <label>Dirt Colour</label>
+      <index>1</index>
+      <defaultcolor r="0.14902" g="0.137255" b="0.121569"/>
+    </usercolor>
+    <script>
+      <classpath>Scripts</classpath>
+      <class>Controller_Fusebox_4Switch</class>
+      <sharedvm>true</sharedvm>
+      <resource id="Switch">Sounds/Switch.ogg</resource>
+    </script>
+    <scriptparameter>
+      <type>string</type>
+      <defaultvalue></defaultvalue>
+      <id>prefix0</id>
+      <description>Insert the light name you wish to assign this slot to</description>
+      <label>Light Group 1</label>
+    </scriptparameter>
+    <scriptparameter>
+      <type>string</type>
+      <defaultvalue></defaultvalue>
+      <id>prefix1</id>
+      <description>Insert the light name you wish to assign this slot to</description>
+      <label>Light Group 2</label>
+    </scriptparameter>
+    <scriptparameter>
+      <type>string</type>
+      <defaultvalue></defaultvalue>
+      <id>prefix2</id>
+      <description>Insert the light name you wish to assign this slot to</description>
+      <label>Light Group 3</label>
+    </scriptparameter>
+    <scriptparameter>
+      <type>string</type>
+      <defaultvalue></defaultvalue>
+      <id>prefix3</id>
+      <description>Insert the light name you wish to assign this slot to</description>
+      <label>Light Group 4</label>
+    </scriptparameter>
+    <materialpath name="Collision">Materials/Collision.nl2mat</materialpath>
+    <materialpath name="Cursor">Materials/Cursor.nl2mat</materialpath>
+    <materialpath name="Opaque">Materials/Atlas1_Opaque.nl2mat</materialpath>
+  </sceneobject>
+</root>
