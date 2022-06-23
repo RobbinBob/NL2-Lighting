@@ -5,7 +5,6 @@ import com.nolimitscoaster.Button;
 import com.nolimitscoaster.StaticSound;
 import nlvm.math3d.Vector4f;
 import nlvm.math3d.Vector3f;
-import util.RayCast;
 
 public class Controller extends Script {
     private SceneObject sco;
@@ -71,7 +70,8 @@ public class Controller extends Script {
                     System.err.println(MSG_WARNING + SCRIPT_NAME + " prefix specified for group " + i + " but no scenery objects found with name '" + PREFIX[i] + ".light' in park");
                 } else {
                     LIGHTOBJ[i] = sim.getSceneObjectsWithName(PREFIX[i] + ".light");
-                    System.out.println(MSG_NOTE + SCRIPT_NAME + " found " + LIGHTOBJ[i].length + " lights for group " + i + " using prefix " + PREFIX[i]);
+                    state[i] = sco.getBooleanParameter("state" + i).boolValue();
+                    System.out.println(MSG_NOTE + SCRIPT_NAME + " found " + LIGHTOBJ[i].length + " lights for group " + i + " using prefix " + PREFIX[i] + " with start state " + state[i]);
                     rays[i] = new RayCast(SWITCH[i]);
                 }
             }
@@ -89,6 +89,14 @@ public class Controller extends Script {
         sSwitch.setPosition(sco.getTranslation());
         sSwitch.setDistanceParameters(1.2f, 5.0f);
         sSwitch.setGain(0.7f);
+
+        for(int ii = 0; ii < state.length; ii++){
+            if(!state[ii]) continue;
+
+            updateSwitch(ii);
+            updateLights(ii);
+        }
+
         System.out.println(MSG_NOTE + SCRIPT_NAME + " setup complete");
         return true;
     }

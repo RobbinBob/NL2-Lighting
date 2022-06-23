@@ -25,7 +25,7 @@
     </usercolor>
     <script>
       <classpath>Scripts</classpath>
-      <class>light.LightWide</class>
+      <class>LightWide</class>
       <sharedvm>true</sharedvm>
     </script>
     <materialpath name="Opaque">Materials/Atlas1_Opaque.nl2mat</materialpath>

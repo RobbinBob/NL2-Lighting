@@ -25,7 +25,7 @@
     </usercolor>
     <script>
       <classpath>Scripts</classpath>
-      <class>light.LightFlood</class>
+      <class>LightFlood</class>
       <sharedvm>true</sharedvm>
       <resource id="SoundLoop">Sounds/Flourescent_MidDistance_Loop.ogg</resource>
     </script>

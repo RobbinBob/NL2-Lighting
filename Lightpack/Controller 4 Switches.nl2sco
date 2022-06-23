@@ -30,12 +30,26 @@
       <description>Insert the light name you wish to assign this slot to</description>
       <label>Light Group 1</label>
     </scriptparameter>
+	<scriptparameter>
+      <type>bool</type>
+      <defaultvalue>false</defaultvalue>
+      <id>state0</id>
+      <description>Will make that group start in the on state</description>
+      <label>Start On</label>
+    </scriptparameter>
     <scriptparameter>
       <type>string</type>
       <defaultvalue></defaultvalue>
       <id>prefix1</id>
       <description>Insert the light name you wish to assign this slot to</description>
       <label>Light Group 2</label>
+    </scriptparameter>
+	<scriptparameter>
+      <type>bool</type>
+      <defaultvalue>false</defaultvalue>
+      <id>state1</id>
+      <description>Will make that group start in the on state</description>
+      <label>Start On</label>
     </scriptparameter>
     <scriptparameter>
       <type>string</type>
@@ -44,12 +58,26 @@
       <description>Insert the light name you wish to assign this slot to</description>
       <label>Light Group 3</label>
     </scriptparameter>
+	<scriptparameter>
+      <type>bool</type>
+      <defaultvalue>false</defaultvalue>
+      <id>state2</id>
+      <description>Will make that group start in the on state</description>
+      <label>Start On</label>
+    </scriptparameter>
     <scriptparameter>
       <type>string</type>
       <defaultvalue></defaultvalue>
       <id>prefix3</id>
       <description>Insert the light name you wish to assign this slot to</description>
       <label>Light Group 4</label>
+    </scriptparameter>
+    <scriptparameter>
+      <type>bool</type>
+      <defaultvalue>false</defaultvalue>
+      <id>state3</id>
+      <description>Will make that group start in the on state</description>
+      <label>Start On</label>
     </scriptparameter>
     <materialpath name="Collision">Materials/Collision.nl2mat</materialpath>
     <materialpath name="Cursor">Materials/Cursor.nl2mat</materialpath>
